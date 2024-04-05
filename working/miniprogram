@@ -1,0 +1,55 @@
+
+
+#### from 2024.03.18
+通过网页写入用户名和密码发给 esp32 之前成功过 
+现在通过微信小程序实现 
+20min  
+
+最小步骤，确定怎么做再做
+要一个登录界面
+要发送用户名和密码到 esp32
+
+
+要解决两个问题
+- [ ] 微信小程序和服务器直接通信
+- [ ] 微信小程序和 esp32 之前通信
+蓝牙
+
+- 微信小程序和服务器直接通信
+这个简单，网上例子很多
+- 微信小程序和 esp32 之前通信
+蓝牙
+
+半小时各看 10 篇，然后选方案
+11:08 - 11:18 看了 4 个
+https://blog.csdn.net/pownew2010/article/details/53064518
+微信小程序设置http请求的步骤详解
+在微信小程序进行网络通信，只能和指定的域名进行通信，微信小程序包括四种类型的网络请求。
+
+https://www.jianshu.com/p/3c0bd44aab91
+实现微信小程序与服务器(SSM)通信
+因为小程序（C/S）的数据传输是不涉及跨域传输的，而 web 是跨域的
+
+
+https://blog.csdn.net/qzw752890913/article/details/109464100
+小程序与服务端的http通信
+
+有程序例子可以测试
+微信小程序API——向服务器发送请求
+
+我用过网络请求的，和巴法云之前就是网络请求
+
+https://blog.csdn.net/cwh1010714845/article/details/78822442
+
+https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html#wxrequestobject
+
+11:22   跑一下上面有程序的例子
+
+npm install -save-dev express
+install：这是 npm 用来安装包的命令。
+
+npm：Node Package Manager，是 Node.js 的包管理器，用于安装和管理 Node.js 包（库或模块）。  
+-save-dev：这个选项意味着包将被添加到项目的 package.json 文件的 devDependencies 部分。这通常用于那些只在开发环境中需要的包，而不是在生产环境中。  
+express：这是要安装的包的名称。Express 是一个流行的 Node.js 框架，用于构建 Web 应用程序和 API。它简化了路由、中间件的使用，以及处理 HTTP 请求和响应的过程。  
+
+

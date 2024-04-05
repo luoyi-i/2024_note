@@ -1,0 +1,36 @@
+_____ nodejs
+nodejs 是 js 的运行环境
+_____ Vue
+Vue 是一个 js 框架用于编译用户界面。
+基于标准 HTML, CSS, CSS and JavaScript,
+提供了声明渲染和基于的编程模型，
+帮助开发用户界面
+核心特征
+* 声明渲染： 基于 js 状态描述 HTML 输出
+* 及时反应： 自动跟踪 js 状态变化，如有变好，更新 DOM 
+
+eg：
+```
+import { createApp, ref } from 'vue'
+
+createApp({
+  setup() {
+    return {
+      count: ref(0)
+    }
+  }
+}).mount('#app')
+```
+```
+<div id="app">
+  <button @click="count++">
+    Count is: {{ count }}
+  </button>
+</div>
+```
+输出
+![alt text](image-9.png)
+
+
+实现 
+https://www.auteltech.cn/service/4004.jhtml

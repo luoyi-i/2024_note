@@ -1,0 +1,31 @@
+在微信小程序中调用外部函数，通常是指从一个文件中导入另一个文件中定义的函数。这可以通过使用 require 方法来实现，这种方法类似于 Node.js 的模块导入方式。以下是如何做到这一点的步骤：
+1. 定义并导出函数：首先，在你的外部文件中定义函数，并使用 module.exports 来导出这个函数。如果你有多个函数要导出，可以导出一个对象，该对象包含所有要导出的函数。
+2. 导入并使用函数：在需要使用这些函数的文件中，使用 require 方法来导入它们。然后，你就可以像使用本地函数一样使用这些导入的函数了。
+示例
+假设你有一个工具函数文件 utils/util.js，里面定义了一个 stringToBytes 函数，你想在另一个文件 pages/wifi/wifi.js 中使用这个函数。
+utils/util.js:
+```
+function stringToBytes(str) {
+    // 函数实现
+    return new Uint8Array(str.length); // 示例实现，实际可能不同
+}
+
+module.exports = {
+    stringToBytes: stringToBytes
+};
+
+```
+
+pages/wifi/wifi.js:
+```
+const util = require('../../utils/util.js'); // 根据实际路径调整
+
+Page({
+    onLoad: function() {
+        var buffer = util.stringToBytes("4G,44444444");
+        console.log(buffer);
+    }
+});
+
+```
+

@@ -1,0 +1,239 @@
+
+## 前端小程序课
+
+
+### 小程序显示一个变量
+    <!--
+    下面是小程序的特殊语法
+    {{ }} 里面的变量会被小程序的变量替换
+    -->
+    <view>{{ name }}</view>
+    <view>{{ height }}</view>
+
+    <!-- 
+    我们可以从下面的例子中看到 {{ }} 里面可以使用简单的 JavaScript 表达式
+    比如说 + - * /
+    函数调用不起作用
+        <view>height + 1: {{ height + 1 }}</view>
+        <view>字符串也可以拼接: {{ name + ' 小程序课' }}</view>
+    -->
+
+### 小程序语法 for, if
+
+```
+<view class="app1-2">
+    <view>kkk小程序课 1-2: wx:if wx:for</view>
+
+    <view> {{ name }} </view>
+
+    <!--
+    WXML 中以 wx: 开头的属性会被小程序解析为特定的用途
+
+    wx:if 后面的 {{ }} 里面的字符串会被当做 JavaScript 代码执行
+    如果值是 true 则会显示
+    如果值为 false 则不会显示
+    -->
+    <view wx:if="{{ 1 === 1 }}">1 和 1 相等</view>
+    <view wx:else> 这一行不会显示 </view>
+    <!-- 
+    上面两行相当于如下的 JavaScript 代码（这是伪代码示例，意会）
+    let html = ''
+    if (1 === 1) {
+        html = '<h3>1 和 1 相等</h3>'
+    } else {
+        html = '<h3> 这一行不会显示 </h3>'
+    }
+    父容器.插入HTML(html)
+
+
+    作为练习，请试试更改 wx:if 中的条件
+    -->
+
+
+
+    <!--
+    wx:for 用来创造多个重复的标签
+    -->
+    <view>
+        <!-- <view wx:for="{{ ['一', 'two', 333] }}" wx:key="index"> -->
+        <view wx:for="{{ ['一', 'two', 333] }}" wx:key="index">
+        <!-- 
+        数组当前下标的默认变量名是 index
+        数组当前项的默认变量明是 item
+        -->
+            下标( {{ index }} ) 值( {{ item }} )
+        </view>
+    </view>
+    <view>
+        <!--  
+        text 相当于 span 标签
+        -->
+        <text>指定循环列表时的下标和项目变量名</text>
+        <!--  
+        可以用 wx:for-index 指定当前下标的变量名
+        可以用 wx:for-item 指定当前项的变量名        
+        -->
+        <view wx:for="{{ ['一', 'two', 333] }}" wx:for-index="xwbc" wx:for-item="xdmu">
+            下标( {{ xwbc }} ) 值( {{ xdmu }} )
+        </view>
+    </view>
+    <!--
+    上面的例子会生成下面的内容
+    <view>
+        <view>
+            下标( 0 ) 值( 一 )
+        </view>
+        <view>
+            下标( 1 ) 值( two )
+        </view>
+        <view>
+            下标( 2 ) 值( 333 )
+        </view>
+    </view>
+    -->
+
+
+    <!--
+    下面的例子，演示了如何从 vue 对象中获取变量
+    -->
+    <view wx:if="{{ show }}">此时 show 的值为 true</view>
+    <view wx:else>show === false</view>
+
+    <!--
+    nameList 是 小程序 data 中定义的变量
+    可以在 wxml 里面直接拿来用
+
+    wx:key 用来指定数组里面 item 的标识符
+    类似 react 中的 key
+    -->
+    <view wx:for="{{ nameList }}" wx:for-index="i" wx:for-item="n" wx:key="i">
+        下标( {{ i }} ) 值( {{ n }} )
+    </view>
+
+
+</view>
+```
+
+### 按键绑定事件
+_____ wxml
+``` 
+<view id="app">
+    <view>kkk小程序课 1-3: bindtap 事件绑定</view>
+
+    <view> {{ name }} </view>
+    <!--  
+    下面的例子用 bindtap 给 button 绑定了一个 tap 事件
+    当用户点击按钮的时候，会执行 Page 对象的 actionTap 方法
+    -->
+    <button bindtap="actionTap">点击更改 name 的值</button>
+</view>
+```
+_____ index.js
+```
+// Page 会自动运行, 自动渲染
+// 注意观察 data 参数
+Page({
+    // data 是页面第一次渲染使用的数据
+    data: {
+        name: 'kuai bian cheng',
+    },
+    actionTap: function(event) {
+        // 通过 this.data 来获取 data 里面定义的变量
+        let n = this.data.name
+        console.log('name 当前值', n)
+        
+        let updatedName = n + ' +++ '
+        // 用 this.setData 更新 this.data 的值
+        this.setData({
+            name: updatedName,
+        })
+        // 注意, 更新 this.data 这个操作是同步的
+        // 所以这里 log 出来就是修改之后的值
+        // 但是把数据更新到 view 里面的操作是异步的
+        // https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html
+        console.log('setData 更新值是', this.data.name)
+    }
+})
+```
+
+### 小程序 input 标签
+input 标签的写法很奇怪
+https://developers.weixin.qq.com/miniprogram/dev/component/input.html
+<input class="weui-input" auto-focus placeholder="将会获取焦点"/>
+```
+<view id="app">
+    <view>kkk小程序课 1-4: 花括号求值</view>
+
+    <view> {{ name }} </view>
+
+    <!--
+    {{}} 用来给 HTML 标签里的属性绑定值
+    下面的意思是 input 标签的 placeholder 属性是 小程序 对象的 data 中的 placeholderText 值
+    在我们这个例子里，placeholderText 是 '请输入'
+
+    小程序 input 标签需要加上 /> 表示结束，这很蠢，但是要接受现实
+    -->
+    <input placeholder="{{ placeholderText }}" />
+
+    <br />
+    <button bindtap="actionUpdatePlaceholder">
+        点击更新 placeholder 的值
+    </button>
+</view>
+```
+
+### input 标签使用
+* index.js
+```
+// Page 会自动运行, 自动渲染
+// 注意观察 data 参数
+Page({
+    // data 是页面第一次渲染使用的数据
+    data: {
+        name: 'kuai bian cheng',
+        username: 'gua',
+    },
+    actionInputUsername: function(event) {
+        // 通过 event.detail.value 获取用户输入的值
+        let value = event.detail.value
+        this.setData({
+            username: value,
+        })
+    },
+})
+```
+
+* index.wxml
+
+```
+<view id="app">
+    <view>kkk小程序课 1-5: 花括号求值</view>
+
+    <view> {{ name }} </view>
+    <!--
+    bindinput 在 input 标签上绑定 input 事件
+
+    当用户输入内容的时候，会触发 actionInputUsername 函数
+    这个函数获取了 input 的 value 然后赋值给 小程序 的 username
+    同时这个 input 也用了 {{ username }}
+
+    我们可以在 actionInputUsername 中做一些操作
+    比如限定输入的长度不能超过 5
+    比如限定输入的字符不能包含 _ 大小写字母 数字 之外的其他字符
+    -->
+    <view>用户名: {{ username }} </view>
+    <input bindinput="actionInputUsername" value="{{ username }}"></input>
+
+    <!--
+    上面的 input 标签通过监听 input 事件, 然后在 actionInputUsername 里面改变 username 的值
+    username 变化后，input.value 也会设置为最新的 username
+    也就是说 input.value 和 小程序 的 username 任意一方改变，都会设置另一方的值
+    这个特性叫双向数据绑定, 也有称为 MVVM 模型的
+
+    这个做法也有个语法糖
+    那就是 model:value
+    见下面的做法
+    -->
+    <textarea model:value="{{ username }}"></textarea>
+</view>
+```
